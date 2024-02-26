@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # Every 1st day of the month
+    - cron: '0 0 1 * *'
 
 permissions:
   contents: read
@@ -53,12 +56,53 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
+      - name: 'Prepare Test Local Action'
+        id: prepare-test-action
+        run: |
+          build_results_raw='
+            {
+              "ios": {
+                "type": "ios",
+                "name": "iOS",
+                "version": "1.2.3",
+                "build_number": 456,
+                "archive_artifact_url": "https://example.com",
+                "testflight_upload_succeeded": true
+              },
+              "ios-development": {
+                "type": "ios",
+                "name": "iOS (Development)",
+                "version": "1.2.3",
+                "build_number": 456,
+                "archive_artifact_url": "https://example.com",
+                "testflight_upload_succeeded": false
+              }
+            }
+          '
+          build_results_json="$(echo "$build_results_raw" | jq '.')"
+          echo "Build results (JSON):"
+          echo "${build_results_json}"
+          build_results_single_line_json="$(echo "$build_results_json" | jq -c '.')"
+          echo "build_results_json=${build_results_single_line_json}" >> "$GITHUB_OUTPUT"
+
       - name: Test Local Action
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          build-results-json: ${{ steps.prepare-test-action.outputs.build_results_json }}
 
       - name: Print Output
         id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+        env:
+          BUILD_RESULTS_MD: ${{ steps.test-action.outputs.build-results-md }}
+          BUILD_RESULTS_MD_JSON: ${{ steps.test-action.outputs.build-results-md-json }}
+          BUILD_RESULTS_MD_JSON_TEXT: ${{ steps.test-action.outputs.build-results-md-json-text }}
+        run: |
+          echo "outputs.build-results-md:"
+          echo "${BUILD_RESULTS_MD}"
+          echo ""
+          echo "outputs.build-results-md-json:"
+          echo "${BUILD_RESULTS_MD_JSON}"
+          echo ""
+          echo "outputs.build-results-md-json-text:"
+          echo "${BUILD_RESULTS_MD_JSON_TEXT}"

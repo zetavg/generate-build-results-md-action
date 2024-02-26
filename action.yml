@@ -1,23 +1,23 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Generate Build Results'
+description: 'Generate build results in Markdown format.'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: 'heart'
-  color: 'red'
+  icon: 'align-left'
+  color: 'orange'
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  build-results-json:
+    description: 'Build results in JSON format.'
+    type: string
     required: true
-    default: '1000'
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  build-results-md:
+    description: 'Build results in Markdown format.'
+  build-results-md-json:
+    description: 'Build results in Markdown format (JSON stringified).'
+  build-results-md-json-text:
+    description: 'Build results in Markdown format (JSON stringified, without quotes).'
 
 runs:
   using: node20

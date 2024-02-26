@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateBuildResultsMd examples example 1 1`] = `
+[
+  "Invalid build result type at index 0: undefined",
+  "Error processing iOS build result at index 2: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "name"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "version"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "build_number"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "archive_artifact_url"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "boolean",
+    "received": "undefined",
+    "path": [
+      "testflight_upload_succeeded"
+    ],
+    "message": "Required"
+  }
+]",
+]
+`;
+
+exports[`generateBuildResultsMd examples example 1 2`] = `
+"* **iOS Sample - Archive**: Download the Xcode archive of \`1.2.3 (456)\` [here](https://example.com). This build has not been uploaded to TestFlight.
+* **iOS Sample - TestFlight**: \`1.2.3 (456)\` has been uploaded to TestFlight."
+`;
+
+exports[`generateBuildResultsMd iOS build results has archive_artifact_url and testflight_upload_succeeded 1`] = `"* **iOS Sample**: \`1.2.3 (456)\` has been uploaded to TestFlight. You can also download the Xcode archive [here](https://example.com)."`;
+
+exports[`generateBuildResultsMd iOS build results has archive_artifact_url but not testflight_upload_succeeded 1`] = `"* **iOS Sample**: Download the Xcode archive of \`1.2.3 (456)\` [here](https://example.com). This build has not been uploaded to TestFlight."`;
+
+exports[`generateBuildResultsMd iOS build results testflight_upload_succeeded but does not have archive_artifact_url 1`] = `"* **iOS Sample**: Download the Xcode archive of \`1.2.3 (456)\` [here](https://example.com). This build has not been uploaded to TestFlight."`;
