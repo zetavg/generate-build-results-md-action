@@ -6927,6 +6927,20 @@ function generateBuildResultsMd(buildResultsArray) {
                 }
                 break;
             }
+            case 'android': {
+                try {
+                    const androidBuildResult = schema_1.AndroidBuildResult.parse(buildResultObj);
+                    // const versionAndBuildNumber = `${androidBuildResult.version}`
+                    if (androidBuildResult.apk_artifact_url) {
+                        items.push(`* **${androidBuildResult.name}**: Download the APK file [here](${androidBuildResult.apk_artifact_url}).`);
+                    }
+                }
+                catch (e) {
+                    errors.push(`Error processing Android build result at index ${index}: ${e instanceof Error ? e.message : e}`);
+                    return;
+                }
+                break;
+            }
             default: {
                 errors.push(`Invalid build result type at index ${index}: ${buildResultObj.type}`);
                 break;
@@ -7039,7 +7053,7 @@ exports.run = run;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.IOSBuildResult = void 0;
+exports.AndroidBuildResult = exports.IOSBuildResult = void 0;
 const zod_1 = __nccwpck_require__(3301);
 exports.IOSBuildResult = zod_1.z.object({
     type: zod_1.z.enum(['ios']),
@@ -7048,6 +7062,12 @@ exports.IOSBuildResult = zod_1.z.object({
     build_number: zod_1.z.number(),
     archive_artifact_url: zod_1.z.string(),
     testflight_upload_succeeded: zod_1.z.boolean()
+});
+exports.AndroidBuildResult = zod_1.z.object({
+    type: zod_1.z.enum(['android']),
+    name: zod_1.z.string(),
+    version: zod_1.z.string(),
+    apk_artifact_url: zod_1.z.string()
 });
 
 

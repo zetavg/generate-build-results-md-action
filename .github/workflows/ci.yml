@@ -76,6 +76,18 @@ jobs:
                 "build_number": 456,
                 "archive_artifact_url": "https://example.com",
                 "testflight_upload_succeeded": false
+              },
+              "android": {
+                "type": "android",
+                "name": "Android",
+                "version": "1.2.3",
+                "apk_artifact_url": "https://example.com"
+              },
+              "android-development": {
+                "type": "android",
+                "name": "Android (Development)",
+                "version": "1.2.3",
+                "apk_artifact_url": "https://example.com"
               }
             }
           '

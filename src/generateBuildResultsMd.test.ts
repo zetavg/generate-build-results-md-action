@@ -94,6 +94,24 @@ describe('generateBuildResultsMd', () => {
     })
   })
 
+  describe('Android build results', () => {
+    test('have apk_artifact_url', () => {
+      const [buildResultsMd, errorMessages] = generateBuildResultsMd([
+        {
+          type: 'android',
+          name: 'Android Sample',
+          version: '1.2.3',
+          apk_artifact_url: 'https://example.com'
+        }
+      ])
+
+      expect(errorMessages).toEqual([])
+      expect(buildResultsMd).toBe(
+        '* **Android Sample**: Download the APK file [here](https://example.com).'
+      )
+    })
+  })
+
   describe('examples', () => {
     test('example 1', () => {
       const [buildResultsMd, errorMessages] = generateBuildResultsMd([
@@ -122,6 +140,19 @@ describe('generateBuildResultsMd', () => {
           build_number: 456,
           archive_artifact_url: '',
           testflight_upload_succeeded: false
+        },
+        {
+          type: 'android',
+          name: 'Android Sample - APK',
+          version: '1.2.3',
+          apk_artifact_url: 'https://example.com'
+        },
+        { type: 'android' },
+        {
+          type: 'android',
+          name: 'Android Sample - Nothing',
+          version: '1.2.3',
+          apk_artifact_url: ''
         }
       ])
 

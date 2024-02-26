@@ -1,4 +1,4 @@
-import { IOSBuildResult } from './schema'
+import { AndroidBuildResult, IOSBuildResult } from './schema'
 
 export default function generateBuildResultsMd(
   buildResultsArray: unknown[]
@@ -42,6 +42,26 @@ export default function generateBuildResultsMd(
         } catch (e) {
           errors.push(
             `Error processing iOS build result at index ${index}: ${e instanceof Error ? e.message : e}`
+          )
+          return
+        }
+        break
+      }
+
+      case 'android': {
+        try {
+          const androidBuildResult = AndroidBuildResult.parse(buildResultObj)
+
+          // const versionAndBuildNumber = `${androidBuildResult.version}`
+
+          if (androidBuildResult.apk_artifact_url) {
+            items.push(
+              `* **${androidBuildResult.name}**: Download the APK file [here](${androidBuildResult.apk_artifact_url}).`
+            )
+          }
+        } catch (e) {
+          errors.push(
+            `Error processing Android build result at index ${index}: ${e instanceof Error ? e.message : e}`
           )
           return
         }

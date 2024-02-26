@@ -50,12 +50,42 @@ exports[`generateBuildResultsMd examples example 1 1`] = `
     "message": "Required"
   }
 ]",
+  "Error processing Android build result at index 6: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "name"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "version"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "apk_artifact_url"
+    ],
+    "message": "Required"
+  }
+]",
 ]
 `;
 
 exports[`generateBuildResultsMd examples example 1 2`] = `
 "* **iOS Sample - Archive**: Download the Xcode archive of \`1.2.3 (456)\` [here](https://example.com). This build has not been uploaded to TestFlight.
-* **iOS Sample - TestFlight**: \`1.2.3 (456)\` has been uploaded to TestFlight."
+* **iOS Sample - TestFlight**: \`1.2.3 (456)\` has been uploaded to TestFlight.
+* **Android Sample - APK**: Download the APK file [here](https://example.com)."
 `;
 
 exports[`generateBuildResultsMd iOS build results has archive_artifact_url and testflight_upload_succeeded 1`] = `"* **iOS Sample**: \`1.2.3 (456)\` has been uploaded to TestFlight. You can also download the Xcode archive [here](https://example.com)."`;
