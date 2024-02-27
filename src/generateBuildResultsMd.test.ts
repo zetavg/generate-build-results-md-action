@@ -92,6 +92,63 @@ describe('generateBuildResultsMd', () => {
       expect(errorMessages).toEqual([])
       expect(buildResultsMd).toMatchSnapshot()
     })
+
+    test('have install_url', () => {
+      const [buildResultsMd, errorMessages] = generateBuildResultsMd([
+        {
+          type: 'ios',
+          name: 'iOS Sample',
+          version: '1.2.3',
+          build_number: 456,
+          archive_artifact_url: '',
+          testflight_upload_succeeded: false,
+          install_url: 'https://example.com'
+        }
+      ])
+
+      expect(errorMessages).toEqual([])
+      expect(buildResultsMd).toBe(
+        '* **iOS Sample**: Click [here](https://example.com) to install `1.2.3 (456)`.'
+      )
+    })
+
+    test('have install_url and archive_artifact_url', () => {
+      const [buildResultsMd, errorMessages] = generateBuildResultsMd([
+        {
+          type: 'ios',
+          name: 'iOS Sample',
+          version: '1.2.3',
+          build_number: 456,
+          archive_artifact_url: 'https://example.com/archive_artifact_url',
+          testflight_upload_succeeded: false,
+          install_url: 'https://example.com/install_url'
+        }
+      ])
+
+      expect(errorMessages).toEqual([])
+      expect(buildResultsMd).toBe(
+        '* **iOS Sample**: Click [here](https://example.com/install_url) to install `1.2.3 (456)`. You can also download the Xcode archive [here](https://example.com/archive_artifact_url).'
+      )
+    })
+
+    test('have install_url, archive_artifact_url, and testflight_upload_succeeded', () => {
+      const [buildResultsMd, errorMessages] = generateBuildResultsMd([
+        {
+          type: 'ios',
+          name: 'iOS Sample',
+          version: '1.2.3',
+          build_number: 456,
+          archive_artifact_url: 'https://example.com/archive_artifact_url',
+          testflight_upload_succeeded: true,
+          install_url: 'https://example.com/install_url'
+        }
+      ])
+
+      expect(errorMessages).toEqual([])
+      expect(buildResultsMd).toBe(
+        '* **iOS Sample**: `1.2.3 (456)` has been uploaded to TestFlight. You can also click [here](https://example.com/install_url) to install it directly, or download the Xcode archive [here](https://example.com/archive_artifact_url).'
+      )
+    })
   })
 
   describe('Android build results', () => {
@@ -110,12 +167,47 @@ describe('generateBuildResultsMd', () => {
         '* **Android Sample**: Download the APK file [here](https://example.com).'
       )
     })
+
+    test('have install_url', () => {
+      const [buildResultsMd, errorMessages] = generateBuildResultsMd([
+        {
+          type: 'android',
+          name: 'Android Sample',
+          version: '1.2.3',
+          apk_artifact_url: '',
+          install_url: 'https://example.com'
+        }
+      ])
+
+      expect(errorMessages).toEqual([])
+      expect(buildResultsMd).toBe(
+        '* **Android Sample**: Click [here](https://example.com) to install.'
+      )
+    })
+
+    test('have install_url and apk_artifact_url', () => {
+      const [buildResultsMd, errorMessages] = generateBuildResultsMd([
+        {
+          type: 'android',
+          name: 'Android Sample',
+          version: '1.2.3',
+          apk_artifact_url: 'https://example.com/apk_artifact_url',
+          install_url: 'https://example.com/install_url'
+        }
+      ])
+
+      expect(errorMessages).toEqual([])
+      expect(buildResultsMd).toBe(
+        '* **Android Sample**: Click [here](https://example.com/install_url) to install. You can also download the APK file [here](https://example.com/apk_artifact_url).'
+      )
+    })
   })
 
   describe('examples', () => {
     test('example 1', () => {
       const [buildResultsMd, errorMessages] = generateBuildResultsMd([
         {},
+        { type: 'unknown' },
         {
           type: 'ios',
           name: 'iOS Sample - Archive',

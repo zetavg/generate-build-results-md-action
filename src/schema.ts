@@ -6,12 +6,14 @@ export const IOSBuildResult = z.object({
   version: z.string(),
   build_number: z.number(),
   archive_artifact_url: z.string(),
-  testflight_upload_succeeded: z.boolean()
+  testflight_upload_succeeded: z.boolean().optional(),
+  install_url: z.string().optional()
 })
 
 export const AndroidBuildResult = z.object({
   type: z.enum(['android']),
   name: z.string(),
   version: z.string(),
-  apk_artifact_url: z.string()
+  apk_artifact_url: z.string(),
+  install_url: z.string().optional()
 })

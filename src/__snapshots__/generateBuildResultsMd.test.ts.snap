@@ -3,7 +3,8 @@
 exports[`generateBuildResultsMd examples example 1 1`] = `
 [
   "Invalid build result type at index 0: undefined",
-  "Error processing iOS build result at index 2: [
+  "Invalid build result type at index 1: unknown",
+  "Error processing iOS build result at index 3: [
   {
     "code": "invalid_type",
     "expected": "string",
@@ -39,18 +40,9 @@ exports[`generateBuildResultsMd examples example 1 1`] = `
       "archive_artifact_url"
     ],
     "message": "Required"
-  },
-  {
-    "code": "invalid_type",
-    "expected": "boolean",
-    "received": "undefined",
-    "path": [
-      "testflight_upload_succeeded"
-    ],
-    "message": "Required"
   }
 ]",
-  "Error processing Android build result at index 6: [
+  "Error processing Android build result at index 7: [
   {
     "code": "invalid_type",
     "expected": "string",

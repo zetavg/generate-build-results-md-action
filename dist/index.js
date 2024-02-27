@@ -6910,15 +6910,27 @@ function generateBuildResultsMd(buildResultsArray) {
                 try {
                     const iosBuildResult = schema_1.IOSBuildResult.parse(buildResultObj);
                     const versionAndBuildNumber = `${iosBuildResult.version} (${iosBuildResult.build_number})`;
-                    if (iosBuildResult.archive_artifact_url &&
+                    if (iosBuildResult.install_url &&
+                        iosBuildResult.archive_artifact_url &&
+                        iosBuildResult.testflight_upload_succeeded) {
+                        items.push(`* **${iosBuildResult.name}**: \`${versionAndBuildNumber}\` has been uploaded to TestFlight. You can also click [here](${iosBuildResult.install_url}) to install it directly, or download the Xcode archive [here](${iosBuildResult.archive_artifact_url}).`);
+                    }
+                    else if (iosBuildResult.archive_artifact_url &&
                         iosBuildResult.testflight_upload_succeeded) {
                         items.push(`* **${iosBuildResult.name}**: \`${versionAndBuildNumber}\` has been uploaded to TestFlight. You can also download the Xcode archive [here](${iosBuildResult.archive_artifact_url}).`);
+                    }
+                    else if (iosBuildResult.install_url &&
+                        iosBuildResult.archive_artifact_url) {
+                        items.push(`* **${iosBuildResult.name}**: Click [here](${iosBuildResult.install_url}) to install \`${versionAndBuildNumber}\`. You can also download the Xcode archive [here](${iosBuildResult.archive_artifact_url}).`);
                     }
                     else if (iosBuildResult.testflight_upload_succeeded) {
                         items.push(`* **${iosBuildResult.name}**: \`${versionAndBuildNumber}\` has been uploaded to TestFlight.`);
                     }
                     else if (iosBuildResult.archive_artifact_url) {
                         items.push(`* **${iosBuildResult.name}**: Download the Xcode archive of \`${versionAndBuildNumber}\` [here](${iosBuildResult.archive_artifact_url}). This build has not been uploaded to TestFlight.`);
+                    }
+                    else if (iosBuildResult.install_url) {
+                        items.push(`* **${iosBuildResult.name}**: Click [here](${iosBuildResult.install_url}) to install \`${versionAndBuildNumber}\`.`);
                     }
                 }
                 catch (e) {
@@ -6931,8 +6943,15 @@ function generateBuildResultsMd(buildResultsArray) {
                 try {
                     const androidBuildResult = schema_1.AndroidBuildResult.parse(buildResultObj);
                     // const versionAndBuildNumber = `${androidBuildResult.version}`
-                    if (androidBuildResult.apk_artifact_url) {
+                    if (androidBuildResult.install_url &&
+                        androidBuildResult.apk_artifact_url) {
+                        items.push(`* **${androidBuildResult.name}**: Click [here](${androidBuildResult.install_url}) to install. You can also download the APK file [here](${androidBuildResult.apk_artifact_url}).`);
+                    }
+                    else if (androidBuildResult.apk_artifact_url) {
                         items.push(`* **${androidBuildResult.name}**: Download the APK file [here](${androidBuildResult.apk_artifact_url}).`);
+                    }
+                    else if (androidBuildResult.install_url) {
+                        items.push(`* **${androidBuildResult.name}**: Click [here](${androidBuildResult.install_url}) to install.`);
                     }
                 }
                 catch (e) {
@@ -7061,13 +7080,15 @@ exports.IOSBuildResult = zod_1.z.object({
     version: zod_1.z.string(),
     build_number: zod_1.z.number(),
     archive_artifact_url: zod_1.z.string(),
-    testflight_upload_succeeded: zod_1.z.boolean()
+    testflight_upload_succeeded: zod_1.z.boolean().optional(),
+    install_url: zod_1.z.string().optional()
 });
 exports.AndroidBuildResult = zod_1.z.object({
     type: zod_1.z.enum(['android']),
     name: zod_1.z.string(),
     version: zod_1.z.string(),
-    apk_artifact_url: zod_1.z.string()
+    apk_artifact_url: zod_1.z.string(),
+    install_url: zod_1.z.string().optional()
 });
 
 
